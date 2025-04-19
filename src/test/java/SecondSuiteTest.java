@@ -29,7 +29,7 @@ public class SecondSuiteTest {
         driver.findElement(By.xpath("//*[@id=\"login-input\"]")).sendKeys("login1");
         driver.findElement(By.xpath("//*[@id=\"password-input\"]")).sendKeys("passTest");
         driver.findElement(By.id("form_auth_button")).click();
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div[1]/div[1]/a[2]")).click();
+        driver.findElement(By.xpath("//*[@id=\"trash-btn\"]")).click(); //исправил на id = trash-btn
     }
 
     @Test
@@ -42,7 +42,7 @@ public class SecondSuiteTest {
         driver.findElement(By.xpath("//*[@id=\"login-input\"]")).sendKeys("login1");
         driver.findElement(By.xpath("//*[@id=\"password-input\"]")).sendKeys("passTest");
         driver.findElement(By.id("form_auth_button")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div[1]/div[1]/a[2]"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"trash-btn\"]"))).click();
     }
 
     @AfterEach
