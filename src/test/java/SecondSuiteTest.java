@@ -18,6 +18,7 @@ public class SecondSuiteTest {
     @BeforeEach
     public void initDriver() {
         driver = new ChromeDriver();
+        Login.performLogin(driver, "login1", "passTest");
     }
 
     @Test
@@ -25,9 +26,6 @@ public class SecondSuiteTest {
     public void authorizationImplicitTest() {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("http://172.24.120.5:8081/login");
-        driver.findElement(By.xpath("//*[@id=\"login-input\"]")).sendKeys("login1");
-        driver.findElement(By.xpath("//*[@id=\"password-input\"]")).sendKeys("passTest");
         driver.findElement(By.id("form_auth_button")).click();
         driver.findElement(By.xpath("//*[@id=\"trash-btn\"]")).click(); //исправил на id = trash-btn
     }
@@ -38,9 +36,6 @@ public class SecondSuiteTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        driver.get("http://172.24.120.5:8081/login");
-        driver.findElement(By.xpath("//*[@id=\"login-input\"]")).sendKeys("login1");
-        driver.findElement(By.xpath("//*[@id=\"password-input\"]")).sendKeys("passTest");
         driver.findElement(By.id("form_auth_button")).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"trash-btn\"]"))).click();
     }
