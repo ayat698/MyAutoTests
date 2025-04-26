@@ -48,7 +48,7 @@ public class DisplayString {
         printerString("Индекс " + Symbols + " после 'задание': " + indexAfterAnotherWord);
     }
 
-    public static void printerString(String text) {
+    private static void printerString(String text) {
         System.out.println(text);
     }
 }
