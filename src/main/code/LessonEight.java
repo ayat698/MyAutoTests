@@ -26,7 +26,7 @@ public class LessonEight {
         printer("Преобразование double " + decimal + " в int: " + fromDoubleToInt);
     }
 
-    private static void printer(String text) {
+    public static void printer(String text) {
         System.out.println(text);
     }
 

@@ -13,6 +13,5 @@ public class Login {
         driver.findElement(By.xpath("//*[@id=\"login-input\"]")).sendKeys(username);
         driver.findElement(By.xpath("//*[@id=\"password-input\"]")).sendKeys(password);
         driver.findElement(By.id("form_auth_button")).click();
-
     }
 }
