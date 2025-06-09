@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,38 +11,35 @@ import java.time.Duration;
 
 public class ThrowableTest {
 
+    WebDriver driver;
+
     @Test
     public void testLoginWithExplicitWait() {
-        WebDriver driver = new ChromeDriver();
+        driver = new ChromeDriver();
+
+        driver.manage().window().maximize();
+        driver.get("http://172.24.120.5:8081/login");
+
+        // Явное ожидание заниженное
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
         try {
-            driver.manage().window().maximize();
-            driver.get("http://172.24.120.5:8081/login");
+            WebElement loginInput = wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(By.id("login-input1"))
+            );
+            WebElement passwordInput = wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(By.id("password-input1"))
+            );
+            WebElement loginButton = wait.until(
+                    ExpectedConditions.elementToBeClickable(By.id("form_auth_button"))
+            );
 
-            // Явное ожидание заниженное
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+            loginInput.sendKeys("login1");
+            passwordInput.sendKeys("passTest");
+            loginButton.click();
 
-            try {
-                WebElement loginInput = wait.until(
-                        ExpectedConditions.visibilityOfElementLocated(By.id("login-input1"))
-                );
-                WebElement passwordInput = wait.until(
-                        ExpectedConditions.visibilityOfElementLocated(By.id("password-input1"))
-                );
-                WebElement loginButton = wait.until(
-                        ExpectedConditions.elementToBeClickable(By.id("form_auth_button"))
-                );
-
-                loginInput.sendKeys("login1");
-                passwordInput.sendKeys("passTest");
-                loginButton.click();
-
-            } catch (TimeoutException e) {
-                throw new ElementNotFoundException("Элемент логина или пароля не найден за указанное время!", e);
-            }
-
-        } finally {
-            driver.quit();
+        } catch (TimeoutException e) {
+            throw new ElementNotFoundException("Элемент логина или пароля не найден за указанное время!", e);
         }
     }
 
@@ -49,5 +47,10 @@ public class ThrowableTest {
         public ElementNotFoundException(String message, Throwable cause) {
             super(message, cause);
         }
+    }
+
+    @AfterEach
+    public void closeDriver() {
+        driver.quit();
     }
 }
