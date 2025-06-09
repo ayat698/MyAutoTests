@@ -17,6 +17,9 @@ public class LessonEight {
         printer("Значение символьной переменной - " + symbol);
         printer("Значение логической переменной - " + isTrue + "\n");
 
+        char ny = 'n' + 'y';
+        printer("Значение символьной переменной - " + ny);
+
         // ДЗ 2
         // Преобразование типов
         double fromIntToDouble = (double) number;
