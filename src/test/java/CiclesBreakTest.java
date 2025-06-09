@@ -20,7 +20,7 @@ public class CiclesBreakTest {
 
         // Создаем 5 заметок, но не больше. При более 5 не создавать
         for (int i = 0; i < 5; i++) {
-            if (countNote() == 5)
+            if (countNote() >= 5)
                 break;
 
             System.out.println("\nИтерация создания заметки " + i);
