@@ -14,7 +14,8 @@ import java.time.Duration;
 @DisplayName(value = "Создание через БД. Авторизация")
 public class LessonFifteenTest {
     private Integer numberGenerated = 100 + (int) (Math.random() * 10000);
-    private String userLogin = "autotest" + numberGenerated;
+    private final String LOGIN = "test_user_10";
+    private final String PASSWORD = "test";
 
     WebDriver driver;
 
@@ -23,17 +24,9 @@ public class LessonFifteenTest {
 
         driver = new ChromeDriver();
 
-        // Создание пользователя через БД
-        executeUpdate( "INSERT INTO nfaut.users (id, login, password) " +
-                "VALUES('" + numberGenerated + "' ,'" + userLogin + "', '$2a$10$cDr4NN.dBNiZRzfH1MTkRex3KwGhiXI4fw2YD9ZIxBpnIKWfoRpFO')");
-
-        // Добавление роли пользователя через БД
-        executeUpdate("INSERT INTO nfaut.users_roles (id, user_id, role_id) " +
-                "VALUES('" + numberGenerated + "', '" + numberGenerated + "', '2')");
-
         // Создание заметки через БД
         executeUpdate("INSERT INTO nfaut.notes (id, user_id, name, color, content, priority, archive_flg) " +
-                "VALUES('" + numberGenerated + "','" + numberGenerated + "', 'Заметка Аята', '#ccff90', 'Содержание заметки БД', '" + numberGenerated + "', 'false')");
+                "VALUES('" + numberGenerated + "', '23', 'Заметка Аята', '#ccff90', 'Содержание заметки БД', '" + numberGenerated + "', 'false')");
     }
 
     @Test
@@ -44,8 +37,8 @@ public class LessonFifteenTest {
 
         // Авторизация
         driver.get("http://172.24.120.5:8081/login");
-        driver.findElement(By.id("login-input")).sendKeys(userLogin);
-        driver.findElement(By.id("password-input")).sendKeys("12344321");
+        driver.findElement(By.id("login-input")).sendKeys(LOGIN);
+        driver.findElement(By.id("password-input")).sendKeys(PASSWORD);
         driver.findElement(By.id("form_auth_button")).click();
 
         //Ожидание прогрузки страницы
@@ -64,7 +57,7 @@ public class LessonFifteenTest {
 
         // Находим и проверяем текст содержимого
         String noteText = driver.findElement(By.id("note-content-" + noteId)).getText();
-        Assertions.assertEquals("Содержание заметки БД", noteText, "Неверное описание заметки");
+        Assertions.assertEquals("Заметка Аята\nСодержание заметки БД", noteText, "Неверное описание заметки");
 
     }
 
@@ -72,12 +65,6 @@ public class LessonFifteenTest {
     public void cleanDBAndCloseDriver() {
         // Удаление заметки через БД
         executeUpdate("DELETE FROM nfaut.notes WHERE id = '" + numberGenerated + "'");
-
-        // Удаление роли добавленного пользователя
-        executeUpdate("DELETE FROM nfaut.users_roles WHERE id = '" + numberGenerated + "'");
-
-        // Удаление добавленного пользователя
-        executeUpdate("DELETE FROM nfaut.users where login = '" + userLogin + "'");
 
         // Закрываем окно браузера
         driver.quit();
